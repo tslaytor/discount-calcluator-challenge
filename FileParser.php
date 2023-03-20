@@ -16,38 +16,51 @@ class FileParser
      * For example: 2015-02-10 S MR
      * 
      * The return vale is an array of assoc. arrays (objects), where each assoc. array has named keys for each data in the line
-     * The standard price of that order is also added to the array
+     * The standard price of that order is added to the array, as well as the default discount (i.e. '-');
      * For example, this line is the input file: 2015-02-10 S MR
      * would become:  
      *  [
+     *      'ignore' => 'false',
      *      'date' => '2015-02-10',
      *      'size' => 'S',
      *      'carrier' => 'MR',
-     *      'price' => '2'
+     *      'price' => '2',
+     *      'discount' => '-'
      *  ]
      */
+
     public static function read($file)
     {
         $lines = file($file);
         
         $fileAsObjectArray = [];
         foreach ($lines as $line) {
-            $lineObject = array();
             $lineAsArray = explode(" ", trim($line));
-            if (isset($lineAsArray[0])){
+            $lineObject = array();
+            $lineObject['ignore'] = true;
+            if (count($lineAsArray) === 3) {
+                // validate date
+                $dateArray = explode("-", $lineAsArray[0]);
+                $validDate = checkdate($dateArray[1], $dateArray[2], $dateArray[0]);
+                // valid size
+                $validSize = $lineAsArray[1] === 'S' || $lineAsArray[1] === 'M' || $lineAsArray[1] === 'L';
+                //validate carrier
+                $validCarrier = $lineAsArray[2] === 'LP' || $lineAsArray[2] === 'MR';
+                if ($validDate && $validSize && $validCarrier){
+                    $lineObject['ignore'] = false;
+                }
+            }
+            
+            if ($lineObject['ignore'] === false){
                 $lineObject['date'] = $lineAsArray[0];
-            }
-            if (isset($lineAsArray[1])){
                 $lineObject['size'] = $lineAsArray[1];
-            }
-            if (isset($lineAsArray[2])){
                 $lineObject['carrier'] = $lineAsArray[2];
+                $lineObject['price'] = PriceLookup::getPrice($lineObject);
+                $lineObject['discount'] = '-';
             }
-            if (!isset($lineObject['date']) || !isset($lineObject['size']) || !isset($lineObject['carrier'])){
-                $lineObject['ignore'] = true;
+            else {
+                $lineObject['unchanged'] = trim($line);
             }
-            $lineObject['price'] = PriceLookup::getPrice($lineObject);
-            $lineObject['discount'] = '-';
             $fileAsObjectArray[] = $lineObject;
         }
         return $fileAsObjectArray;
