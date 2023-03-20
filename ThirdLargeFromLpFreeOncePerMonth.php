@@ -21,7 +21,7 @@ class ThirdLargeFromLpFreeOncePerMonth
                 self::$deliveriesThisMonth++;
                 if (self::$deliveriesThisMonth === 3) {
                     // This one is free
-                    $order['price'] = '0';
+                    $order['price'] = '0.00';
                     $order['discount'] = '6.90';
                 }
             }
