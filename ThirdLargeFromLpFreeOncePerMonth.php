@@ -1,5 +1,7 @@
 <?php
 
+require_once 'PriceLookup.php';
+
 class ThirdLargeFromLpFreeOncePerMonth
 {
     public static ?string $lastOrderMonth = null;
@@ -22,7 +24,7 @@ class ThirdLargeFromLpFreeOncePerMonth
                 if (self::$deliveriesThisMonth === 3) {
                     // This one is free
                     $order['price'] = '0.00';
-                    $order['discount'] = '6.90';
+                    $order['discount'] = PriceLookup::getPrice($order);
                 }
             }
             else {
