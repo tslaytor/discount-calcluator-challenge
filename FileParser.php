@@ -40,8 +40,11 @@ class FileParser
             $lineObject['ignore'] = true;
             if (count($lineAsArray) === 3) {
                 // validate date
+                $validDate = false;
                 $dateArray = explode("-", $lineAsArray[0]);
-                $validDate = checkdate($dateArray[1], $dateArray[2], $dateArray[0]);
+                if (count($dateArray) === 3){
+                    $validDate = checkdate($dateArray[1], $dateArray[2], $dateArray[0]);
+                }
                 // valid size
                 $validSize = $lineAsArray[1] === 'S' || $lineAsArray[1] === 'M' || $lineAsArray[1] === 'L';
                 //validate carrier
@@ -56,7 +59,7 @@ class FileParser
                 $lineObject['size'] = $lineAsArray[1];
                 $lineObject['carrier'] = $lineAsArray[2];
                 $lineObject['price'] = PriceLookup::getPrice($lineObject);
-                $lineObject['discount'] = '-';
+                $lineObject['discount'] = '0.00';
             }
             else {
                 $lineObject['unchanged'] = trim($line);
