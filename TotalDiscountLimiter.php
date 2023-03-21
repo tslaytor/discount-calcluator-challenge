@@ -11,24 +11,26 @@ class TotalDiscountLimiter
             self::$lastOrderMonth = $order['date'];
         }
 
-        $thisAsDateTime = new DateTime($order['date']);
-        $lastAsDateTime = new DateTime(self::$lastOrderMonth);
+        $thisOrderDateTime = new DateTime($order['date']);
+        $lastOrderDateTime = new DateTime(self::$lastOrderMonth);
 
-        $interval = $thisAsDateTime->diff($lastAsDateTime);
+        $interval = $thisOrderDateTime->diff($lastOrderDateTime);
 
-        if (isset($order['discount']) && is_numeric($order['discount'])){
-            if ($interval->format('%y%m') === '00') {
-                // The two dates are in the same calendar month (and year)
-                self::$totalDiscountThisMonth += $order['discount'];
-            }
-            else {
-                self::$totalDiscountThisMonth = $order['discount'];
-            }
-            if (self::$totalDiscountThisMonth > 10){
-                $difference = self::$totalDiscountThisMonth - 10;
-                $order['discount'] = number_format($order['discount'] - $difference, 2) ;
-                $order['price'] = number_format($order['price'] + $difference, 2);
-            }
+        if ($interval->format('%y%m') === '00') {
+            // The two dates are in the same calendar month (and year)
+            self::$totalDiscountThisMonth += $order['discount'];
         }
+        else {
+            self::$totalDiscountThisMonth = $order['discount'];
+        }
+        if (self::$totalDiscountThisMonth > 10){
+            $difference = self::$totalDiscountThisMonth - 10;
+            self::$totalDiscountThisMonth -= $order['discount'];
+            self::$totalDiscountThisMonth += $order['discount'] - $difference;
+
+            $order['discount'] = number_format($order['discount'] - $difference, 2) ;
+            $order['price'] = number_format($order['price'] + $difference, 2);
+        }
+        self::$lastOrderMonth = $order['date'];
     }
 }
