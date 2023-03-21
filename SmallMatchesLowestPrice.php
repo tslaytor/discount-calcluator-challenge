@@ -1,12 +1,15 @@
 <?php
 
+require_once 'PriceLookup.php';
+
 class SmallMatcheslowestPrice
 {
     public function __invoke(&$order)
     {
-        if ($order['size'] === 'S' && $order['carrier'] === 'MR') {
-            $order['price'] = '1.50';
-            $order['discount'] = '0.50';
+        if ($order['size'] === 'S') {
+            $originalPrice = $order['price'];
+            $order['price'] = PriceLookup::getCheapest($order);
+            $order['discount'] = number_format($originalPrice - $order['price'], 2);
         }
     }
 }
