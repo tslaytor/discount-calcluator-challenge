@@ -22,5 +22,3 @@ foreach ($data as &$order) {
     }
     Output::echo($order);
 }
-
-// CHANGING PRICES IN THE PRICES ARRAY REALLY SEEMS TO FUCK IT - THE PROBLEM IS WITH THE DISCOUNT LIMITER
