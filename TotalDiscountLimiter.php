@@ -9,6 +9,9 @@ class TotalDiscountLimiter
     
     public function __invoke($order)
     {
+        if ($order->date === '2016-03-09' || $order->date === '2017-03-15'){
+            print "total this month: " . self::$totalDiscountThisMonth . PHP_EOL;
+        }
         if (self::$lastOrderMonth === null){
             self::$lastOrderMonth = $order->date;
         }
@@ -23,6 +26,7 @@ class TotalDiscountLimiter
             self::$totalDiscountThisMonth += $order->discount;
         }
         else {
+            print "MONTH CHANGE" .PHP_EOL;
             self::$totalDiscountThisMonth = $order->discount;
         }
         if (self::$totalDiscountThisMonth > 10){
