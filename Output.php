@@ -4,14 +4,14 @@ class Output
 {
     public static function echo($order)
     {
-        if ($order['ignore']){
-            echo $order['unchanged'] . " " . "Ignored" . PHP_EOL;
-        }
-        else {
-            if ($order['discount'] == 0.00) {
+        if ($order['valid']){        
+            if ($order['discount'] === '0.00') {
                 $order['discount'] = '-';
             }
-            echo $order['date'] . " " . $order['size'] . " " . $order['carrier'] . " " . $order['price'] . " " . $order['discount'] . PHP_EOL;
+            echo $order['original_input'] . " " . $order['price'] . " " . $order['discount'] . PHP_EOL;
+        }
+        else {
+            echo $order['original_input'] . " " . "Ignored" . PHP_EOL;
         }
     }
 }

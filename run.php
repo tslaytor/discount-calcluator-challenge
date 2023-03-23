@@ -6,7 +6,20 @@ require_once ("ThirdLargeFromLpFreeOncePerMonth.php");
 require_once ("TotalDiscountLimiter.php");
 require_once ("Output.php");
 
-$data = FileParser::read("input.txt");
+    /**
+     * SUMMARY
+     * This is the file that runs all the processes
+     *
+     * DESCRIPTION
+     * 1. It parses the file with FileParser::parse() to convert it into a new data structure
+     * 2. Then, it lists the rules in the array "rules". To add a rule or remove a rule, simply add or remove it from the rules array
+     * 3. Next, it loops through each of the orders in the new data structure
+     * 4. If an order is valid, it applies each of the rules to the order
+     * 5. Finally, it outputs each order to display the results
+     * 
+     */
+
+$data = FileParser::parse("input.txt");
 
 $rules = [
     new SmallMatcheslowestPrice(),
@@ -15,7 +28,7 @@ $rules = [
 ];
 
 foreach ($data as &$order) {
-    if ($order['ignore'] === false){
+    if ($order['valid']){
         foreach ($rules as $rule) {
             $rule($order);
         }

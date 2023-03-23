@@ -1,71 +1,68 @@
 <?php
 
 require_once 'PriceLookup.php';
+require_once 'Valid.php';
 
 class FileParser
 {
 
     /**
      * SUMMARY
-     * Takes a file and returns each line as an object with named keys.
+     * Takes a .txt file of orders and returns an array of objects, where each object represents an order
      *
      * DESCRIPTION
-     * The input file is a history of Vinted orders in .txt format. 
-     * Each new line represents a new order, with a space " " seperating each peice of order data. 
-     * The data one each line must follow this pattern: DATE SIZE CARRIER.
-     * For example: 2015-02-10 S MR
+     * The input file is a history of orders in .txt format, with each order seperated by a new line. 
+     * If the format and values of an order are valid, the object is marked as valid and keys are added for each attribute value.
+     * If the input in invalid, the object is marked as invalid.
      * 
-     * The return vale is an array of assoc. arrays (objects), where each assoc. array has named keys for each data in the line
-     * The standard price of that order is added to the array, as well as the default discount (i.e. '-');
-     * For example, this line is the input file: 2015-02-10 S MR
-     * would become:  
-     *  [
-     *      'ignore' => 'false',
-     *      'date' => '2015-02-10',
-     *      'size' => 'S',
-     *      'carrier' => 'MR',
-     *      'price' => '2',
-     *      'discount' => '-'
-     *  ]
+     * RETURN VALUE EXAMPLES
+     * 
+     * valid input example
+     * input: "2015-02-10 S MR"
+     * output: {
+     *          'original_input' => '2015-02-10 S MR',
+     *          'valid' => 'true',
+     *          'date' => '2015-02-10',
+     *          'size' => 'S',
+     *          'carrier' => 'MR',
+     *          'price' => '2',
+     *          'discount' => '0.00' // standard discount before any discount rules are applied
+     *          }
+     * 
+     * invalid input example
+     * input: "2015-55-10 SM MR"
+     * output: {
+     *          'original_input' => '2015-55-10 SM MR',
+     *          'valid' => 'false',
+     *          }
      */
 
-    public static function read($file)
+    public static function parse($file)
     {
-        $lines = file($file);
-        
-        $fileAsObjectArray = [];
-        foreach ($lines as $line) {
-            $lineAsArray = explode(" ", trim($line));
-            $lineObject = array();
-            $lineObject['ignore'] = true;
-            if (count($lineAsArray) === 3) {
-                // validate date
-                $validDate = false;
-                $dateArray = explode("-", $lineAsArray[0]);
-                if (count($dateArray) === 3){
-                    $validDate = checkdate($dateArray[1], $dateArray[2], $dateArray[0]);
-                }
-                // valid size
-                $validSize = $lineAsArray[1] === 'S' || $lineAsArray[1] === 'M' || $lineAsArray[1] === 'L';
-                //validate carrier
-                $validCarrier = $lineAsArray[2] === 'LP' || $lineAsArray[2] === 'MR';
-                if ($validDate && $validSize && $validCarrier){
-                    $lineObject['ignore'] = false;
-                }
-            }
+        $returnArray = [];
+        $orders = file($file);
+        foreach ($orders as $order) {
+            $orderObject = array();
+            $orderObject['original_input'] = trim($order);
+            $orderObject['valid'] = false;
             
-            if ($lineObject['ignore'] === false){
-                $lineObject['date'] = $lineAsArray[0];
-                $lineObject['size'] = $lineAsArray[1];
-                $lineObject['carrier'] = $lineAsArray[2];
-                $lineObject['price'] = PriceLookup::getPrice($lineObject);
-                $lineObject['discount'] = '0.00';
+            $orderAttributes = explode(" ", trim($order));
+            if (count($orderAttributes) === 3) {
+                $date = $orderAttributes[0];
+                $size = $orderAttributes[1];
+                $carrier = $orderAttributes[2];
+                
+                if (Valid::date($date) && Valid::size($size) && Valid::carrier($carrier)){
+                    $orderObject['valid'] = true;
+                    $orderObject['date'] = $date;
+                    $orderObject['size'] = $size;
+                    $orderObject['carrier'] = $carrier;
+                    $orderObject['price'] = PriceLookup::getPrice($orderObject);
+                    $orderObject['discount'] = '0.00';
+                }
             }
-            else {
-                $lineObject['unchanged'] = trim($line);
-            }
-            $fileAsObjectArray[] = $lineObject;
+            $returnArray[] = $orderObject;
         }
-        return $fileAsObjectArray;
+        return $returnArray;
     }
 }
