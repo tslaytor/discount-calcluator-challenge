@@ -1,5 +1,6 @@
 <?php
 
+require_once 'Order.php';
 require_once 'PriceLookup.php';
 require_once 'Valid.php';
 
@@ -19,7 +20,8 @@ class FileParser
      * 
      * valid input example
      * input: "2015-02-10 S MR"
-     * output: {
+     * output: 
+     *    Order {
      *          'original_input' => '2015-02-10 S MR',
      *          'valid' => 'true',
      *          'date' => '2015-02-10',
@@ -31,7 +33,8 @@ class FileParser
      * 
      * invalid input example
      * input: "2015-55-10 SM MR"
-     * output: {
+     * output: 
+     *    Order {
      *          'original_input' => '2015-55-10 SM MR',
      *          'valid' => 'false',
      *          }
@@ -42,9 +45,7 @@ class FileParser
         $returnArray = [];
         $orders = file($file);
         foreach ($orders as $order) {
-            $orderObject = array();
-            $orderObject['original_input'] = trim($order);
-            $orderObject['valid'] = false;
+            $orderObject = new Order(trim($order));
             
             $orderAttributes = explode(" ", trim($order));
             if (count($orderAttributes) === 3) {
@@ -53,12 +54,11 @@ class FileParser
                 $carrier = $orderAttributes[2];
                 
                 if (Valid::date($date) && Valid::size($size) && Valid::carrier($carrier)){
-                    $orderObject['valid'] = true;
-                    $orderObject['date'] = $date;
-                    $orderObject['size'] = $size;
-                    $orderObject['carrier'] = $carrier;
-                    $orderObject['price'] = PriceLookup::getPrice($orderObject);
-                    $orderObject['discount'] = '0.00';
+                    $orderObject->valid = true;
+                    $orderObject->date = $date;
+                    $orderObject->size = $size;
+                    $orderObject->carrier = $carrier;
+                    $orderObject->price = PriceLookup::getPrice($orderObject);
                 }
             }
             $returnArray[] = $orderObject;

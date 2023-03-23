@@ -1,15 +1,16 @@
 <?php
 
+require_once 'Order.php';
 require_once 'PriceLookup.php';
 
 class SmallMatcheslowestPrice
 {
-    public function __invoke(&$order)
+    public function __invoke($order)
     {
-        if ($order['size'] === 'S') {
-            $originalPrice = $order['price'];
-            $order['price'] = PriceLookup::getCheapest($order);
-            $order['discount'] = number_format($originalPrice - $order['price'], 2);
+        if ($order->size === 'S') {
+            $originalPrice = $order->price;
+            $order->price = PriceLookup::getCheapest($order);
+            $order->discount = number_format($originalPrice - $order->price, 2);
         }
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+require_once 'Order.php';
 require_once 'PriceLookup.php';
 
 class ThirdLargeFromLpFreeOncePerMonth
@@ -7,13 +8,13 @@ class ThirdLargeFromLpFreeOncePerMonth
     public static ?string $lastOrderMonth = null;
     public static int $deliveriesThisMonth = 0;
 
-    public function __invoke(&$order)
+    public function __invoke($order)
     {
-        if ($order['size'] === 'L' && $order['carrier'] === 'LP'){
+        if ($order->size === 'L' && $order->carrier === 'LP'){
             if (self::$lastOrderMonth === null){
-                self::$lastOrderMonth = $order['date'];
+                self::$lastOrderMonth = $order->date;
             }
-            $thisAsDateTime = new DateTime($order['date']);
+            $thisAsDateTime = new DateTime($order->date);
             $lastAsDateTime = new DateTime(self::$lastOrderMonth);
             
             $interval = $thisAsDateTime->diff($lastAsDateTime);
@@ -23,15 +24,15 @@ class ThirdLargeFromLpFreeOncePerMonth
                 self::$deliveriesThisMonth++;
                 if (self::$deliveriesThisMonth === 3) {
                     // This one is free
-                    $order['price'] = '0.00';
-                    $order['discount'] = PriceLookup::getPrice($order);
+                    $order->price = '0.00';
+                    $order->discount = PriceLookup::getPrice($order);
                 }
             }
             else {
                 // different month, so set the counter to 1 (this is the first large delivery of the month)
                 self::$deliveriesThisMonth = 1;
                 // update the last order month
-                self::$lastOrderMonth = $order['date'];
+                self::$lastOrderMonth = $order->date;
             }       
         }
     }
