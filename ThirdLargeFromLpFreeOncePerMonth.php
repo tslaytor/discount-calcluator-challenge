@@ -15,12 +15,12 @@ class ThirdLargeFromLpFreeOncePerMonth
             if (self::$lastOrderMonth === null){
                 self::$lastOrderMonth = $order->date;
             }
-            $thisAsDateTime = new DateTime($order->date);
-            $lastAsDateTime = new DateTime(self::$lastOrderMonth);
+            $thisOrderDateTime = new DateTime($order->date);
+            $lastOrderDateTime = new DateTime(self::$lastOrderMonth);
             
-            $interval = $thisAsDateTime->diff($lastAsDateTime);
+            // $interval = $thisAsDateTime->diff($lastAsDateTime);
             
-            if ($interval->format('%y%m') === '00') {
+            if ($thisOrderDateTime->format('Ym') == $lastOrderDateTime->format('Ym')) {
                 // The two dates are in the same calendar month (and year)
                 self::$deliveryCount++;
                 if (self::$deliveryCount === 3) {

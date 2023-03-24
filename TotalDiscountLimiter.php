@@ -19,9 +19,13 @@ class TotalDiscountLimiter
         $thisOrderDateTime = new DateTime($order->date);
         $lastOrderDateTime = new DateTime(self::$lastOrderMonth);
 
-        $interval = $thisOrderDateTime->diff($lastOrderDateTime);
+        // $interval = $thisOrderDateTime->diff($lastOrderDateTime);
 
-        if ($interval->format('%y%m') === '00') {
+        // var_dump($thisOrderDateTime);
+        // var_dump($lastOrderDateTime);
+        // var_dump($interval->format('%y%m'));
+
+        if ($thisOrderDateTime->format('Ym') == $lastOrderDateTime->format('Ym'))  {
             // The two dates are in the same calendar month (and year)
             self::$totalDiscountThisMonth += $order->discount;
         }

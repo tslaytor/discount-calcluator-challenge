@@ -20,6 +20,7 @@ require_once ("Output.php");
      * 
      */
 
+// $orders = FileParser::parse("input.txt");
 $orders = FileParser::parse("random-play-tests.txt");
 
 $rules = [
