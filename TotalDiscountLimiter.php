@@ -1,36 +1,20 @@
 <?php
 
 require_once 'Order.php';
+require_once 'Month.php';
 
 class TotalDiscountLimiter
 {
-    public static ?string $lastOrderMonth = null;
+    public static ?string $lastOrderDate = null;
     public static float $totalDiscountThisMonth = 0;
     
     public function __invoke($order)
     {
-        if ($order->date === '2016-03-09' || $order->date === '2017-03-15'){
-            print "total this month: " . self::$totalDiscountThisMonth . PHP_EOL;
-        }
-        if (self::$lastOrderMonth === null){
-            self::$lastOrderMonth = $order->date;
-        }
-
-        $thisOrderDateTime = new DateTime($order->date);
-        $lastOrderDateTime = new DateTime(self::$lastOrderMonth);
-
-        // $interval = $thisOrderDateTime->diff($lastOrderDateTime);
-
-        // var_dump($thisOrderDateTime);
-        // var_dump($lastOrderDateTime);
-        // var_dump($interval->format('%y%m'));
-
-        if ($thisOrderDateTime->format('Ym') == $lastOrderDateTime->format('Ym'))  {
-            // The two dates are in the same calendar month (and year)
+        if (Month::same(self::$lastOrderDate, $order->date))  {
             self::$totalDiscountThisMonth += $order->discount;
         }
         else {
-            print "MONTH CHANGE" .PHP_EOL;
+            // different calendar month
             self::$totalDiscountThisMonth = $order->discount;
         }
         if (self::$totalDiscountThisMonth > 10){
@@ -41,6 +25,6 @@ class TotalDiscountLimiter
             $order->discount = number_format($order->discount - $difference, 2) ;
             $order->price = number_format($order->price + $difference, 2);
         }
-        self::$lastOrderMonth = $order->date;
+        self::$lastOrderDate = $order->date;
     }
 }

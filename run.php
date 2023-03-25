@@ -9,7 +9,7 @@ require_once ("Output.php");
 
     /**
      * SUMMARY
-     * This is the file that runs all the processes
+     * This is the file that runs all the processes to calculate the discount for each order.
      *
      * DESCRIPTION
      * 1. It parses the file with FileParser::parse() to convert it into a new data structure

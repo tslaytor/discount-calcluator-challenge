@@ -5,22 +5,14 @@ require_once 'PriceLookup.php';
 
 class ThirdLargeFromLpFreeOncePerMonth
 {
-    public static ?string $lastOrderMonth = null;
+    public static ?string $lastOrderDate = null;
     public static int $deliveryCount = 0;
     public static bool $gotFreeThisMonth = false;
 
     public function __invoke($order)
     {
         if ($order->size === 'L' && $order->carrier === 'LP'){
-            if (self::$lastOrderMonth === null){
-                self::$lastOrderMonth = $order->date;
-            }
-            $thisOrderDateTime = new DateTime($order->date);
-            $lastOrderDateTime = new DateTime(self::$lastOrderMonth);
-            
-            // $interval = $thisAsDateTime->diff($lastAsDateTime);
-            
-            if ($thisOrderDateTime->format('Ym') == $lastOrderDateTime->format('Ym')) {
+            if (Month::same(self::$lastOrderDate, $order->date)) {
                 // The two dates are in the same calendar month (and year)
                 self::$deliveryCount++;
                 if (self::$deliveryCount === 3) {
@@ -47,7 +39,7 @@ class ThirdLargeFromLpFreeOncePerMonth
                 }
                 
                 // update the last order month
-                self::$lastOrderMonth = $order->date;
+                self::$lastOrderDate = $order->date;
             }       
         }
     }
