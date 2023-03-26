@@ -1,6 +1,5 @@
 <?php
 
-// require_once __DIR__ . '/../code/Models/Order.php';
 require_once __DIR__ . '/../code/Functions/Valid.php';
 
 use \PHPUnit\Framework\TestCase;

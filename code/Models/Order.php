@@ -45,7 +45,7 @@ class Order
         $this->date = $date;
     }
 
-    public function getDate(): string
+    public function getDate(): ?string
     {
         return $this->date;
     }
@@ -55,7 +55,7 @@ class Order
         $this->size = $size;
     }
 
-    public function getSize(): string
+    public function getSize(): ?string
     {
         return $this->size;
     }
@@ -65,7 +65,7 @@ class Order
         $this->carrier = $carrier;
     }
 
-    public function getCarrier(): string
+    public function getCarrier(): ?string
     {
         return $this->carrier;
     }
@@ -75,7 +75,7 @@ class Order
         $this->price = $price;
     }
 
-    public function getPrice(): string
+    public function getPrice(): ?string
     {
         return $this->price;
     }
