@@ -26,14 +26,14 @@ require_once 'PriceLookup.php';
 // 2023-01-03 (3)(free - start count again)
 // 2023-01-04 (1)
 // 2023-01-05 (2)
-// 2023-01-06 (3)(3rd L, same month, not free)
-// 2023-02-01 (4) (new month, at least 3 L packages since last discount, free! - start count again)
+// 2023-01-06 (3)(already had discount this month, not free)
+// 2023-02-01 (4)(new month, at least 3 L packages since last discount, free! - start count again)
 // 2023-02-02 (1)
 // 2023-02-03 (2)
-// 2023-02-04 (3) (already had discount this month, not free)
+// 2023-02-04 (3)(already had discount this month, not free)
 
-// in my implementation, I've used the 2nd interpretation (b), since is seems the policy is meant to cap the discount, but not punish the customer for 
-// ordering across different months
+// in my implementation, I've used the 2nd interpretation (b).
+
 
 class ThirdLargeFromLpFreeOncePerMonth
 {
@@ -47,7 +47,7 @@ class ThirdLargeFromLpFreeOncePerMonth
             
             self::$deliveryCount++;
 
-            if (!Month::same(self::$lastOrderDate, $thisOrder->date)){
+            if (Month::different(self::$lastOrderDate, $thisOrder->date)){
                 self::$gotFreeThisMonth = false;
             }
 
