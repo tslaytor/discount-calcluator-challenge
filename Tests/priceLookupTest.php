@@ -14,7 +14,6 @@ class priceLookupTest extends TestCase
         $order->setCarrier('LP');
 
         $this->assertEquals('1.50', PriceLookup::getPrice($order));
-        
     }
 
     public function testGetPriceMLP(): void

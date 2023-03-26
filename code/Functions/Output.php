@@ -14,7 +14,7 @@ require_once __DIR__ . '/../Models/Order.php';
 
 class Output
 {
-    public static function echo($order)
+    public static function echo($order): void
     {
         if ($order->getValid()){        
             if ($order->getDiscount() === '0.00') {

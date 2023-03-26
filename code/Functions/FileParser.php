@@ -47,7 +47,7 @@ class FileParser
      *          }
      */
 
-    public static function parse($file)
+    public static function parse($file): array
     {
         $returnArray = [];
         $orders = file($file);
