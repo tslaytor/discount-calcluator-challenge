@@ -39,6 +39,11 @@ class FileParser
      *    Order {
      *          'original_input' => '2015-55-10 SM MR',
      *          'valid' => 'false',
+     *          'date' => null,
+     *          'size' => null,
+     *          'carrier' => null,
+     *          'price' => null,
+     *          'discount' => '0.00'
      *          }
      */
 
