@@ -1,7 +1,7 @@
 <?php
 
-require_once 'Order.php';
-require_once 'PriceLookup.php';
+require_once '../Models/Order.php';
+require_once '../Functions/PriceLookup.php';
 
 // NOTE TO ASSESSOR 
 // I wasn't sure if the once per month rule meant either:

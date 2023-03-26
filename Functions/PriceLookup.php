@@ -1,7 +1,7 @@
 <?php
 
-require_once 'Order.php';
-require_once 'Prices.php';
+require_once '../Models/Order.php';
+require_once '../Models/Prices.php';
 
     /**
      * SUMMARY
