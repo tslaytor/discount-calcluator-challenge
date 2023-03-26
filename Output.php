@@ -6,14 +6,14 @@ class Output
 {
     public static function echo($order)
     {
-        if ($order->valid){        
-            if ($order->discount === '0.00') {
-                $order->discount = '-';
+        if ($order->getValid()){        
+            if ($order->getDiscount() === '0.00') {
+                $order->setDiscount('-');
             }
-            echo $order->originalInput . " " . $order->price . " " . $order->discount . PHP_EOL;
+            echo $order->getOriginalInput() . " " . $order->getPrice() . " " . $order->getDiscount() . PHP_EOL;
         }
         else {
-            echo $order->originalInput . " " . "Ignored" . PHP_EOL;
+            echo $order->getOriginalInput() . " " . "Ignored" . PHP_EOL;
         }
     }
 }

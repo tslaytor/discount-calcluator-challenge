@@ -43,21 +43,21 @@ class ThirdLargeFromLpFreeOncePerMonth
 
     public function __invoke($thisOrder)
     {
-        if ($thisOrder->size === 'L' && $thisOrder->carrier === 'LP'){
+        if ($thisOrder->getSize() === 'L' && $thisOrder->getCarrier() === 'LP'){
             
             self::$deliveryCount++;
 
-            if (Month::different(self::$lastOrderDate, $thisOrder->date)){
+            if (Month::different(self::$lastOrderDate, $thisOrder->getDate())){
                 self::$gotFreeThisMonth = false;
             }
 
             if (self::$deliveryCount >= 3 && self::$gotFreeThisMonth === false){
-                $thisOrder->price = '0.00';
-                $thisOrder->discount = PriceLookup::getPrice($thisOrder);
+                $thisOrder->setPrice('0.00');
+                $thisOrder->setDiscount(PriceLookup::getPrice($thisOrder));
                 self::$gotFreeThisMonth = true;
                 self::$deliveryCount = 0;
             }
-            self::$lastOrderDate = $thisOrder->date;
+            self::$lastOrderDate = $thisOrder->getDate();
         }
     }
 }

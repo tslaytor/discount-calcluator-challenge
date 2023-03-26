@@ -7,10 +7,10 @@ class SmallMatcheslowestPrice
 {
     public function __invoke($order)
     {
-        if ($order->size === 'S') {
-            $originalPrice = $order->price;
-            $order->price = PriceLookup::getCheapest($order);
-            $order->discount = number_format($originalPrice - $order->price, 2);
+        if ($order->getSize() === 'S') {
+            $originalPrice = $order->getPrice();
+            $order->setPrice(PriceLookup::getCheapest($order));
+            $order->setDiscount(number_format($originalPrice - $order->getPrice(), 2));
         }
     }
 }

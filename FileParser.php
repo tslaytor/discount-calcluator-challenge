@@ -16,8 +16,9 @@ class FileParser
      * If the format and values of an order are valid, the object is marked as valid and keys are added for each attribute value.
      * If the input in invalid, the object is marked as invalid.
      * 
-     * RETURN VALUE EXAMPLES
+     * EXAMPLES
      * 
+     * 1.
      * valid input example
      * input: "2015-02-10 S MR"
      * output: 
@@ -31,6 +32,7 @@ class FileParser
      *          'discount' => '0.00' // standard discount before any discount rules are applied
      *          }
      * 
+     * 2.
      * invalid input example
      * input: "2015-55-10 SM MR"
      * output: 
@@ -54,11 +56,11 @@ class FileParser
                 $carrier = $orderAttributes[2];
                 
                 if (Valid::date($date) && Valid::size($size) && Valid::carrier($carrier)){
-                    $orderObject->valid = true;
-                    $orderObject->date = $date;
-                    $orderObject->size = $size;
-                    $orderObject->carrier = $carrier;
-                    $orderObject->price = PriceLookup::getPrice($orderObject);
+                    $orderObject->setValid(true);
+                    $orderObject->setDate($date);
+                    $orderObject->setSize($size);
+                    $orderObject->setCarrier($carrier);
+                    $orderObject->setPrice(PriceLookup::getPrice($orderObject));
                 }
             }
             $returnArray[] = $orderObject;

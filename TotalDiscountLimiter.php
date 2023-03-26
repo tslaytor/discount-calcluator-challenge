@@ -10,21 +10,21 @@ class TotalDiscountLimiter
     
     public function __invoke($thisOrder)
     {
-        if (Month::same(self::$lastOrderDate, $thisOrder->date))  {
-            self::$totalDiscountThisMonth += $thisOrder->discount;
+        if (Month::same(self::$lastOrderDate, $thisOrder->getDate()))  {
+            self::$totalDiscountThisMonth += $thisOrder->getDiscount();
         }
         else {
             // different calendar month
-            self::$totalDiscountThisMonth = $thisOrder->discount;
+            self::$totalDiscountThisMonth = $thisOrder->getDiscount();
         }
         if (self::$totalDiscountThisMonth > 10){
             $difference = self::$totalDiscountThisMonth - 10;
-            self::$totalDiscountThisMonth -= $thisOrder->discount;
-            self::$totalDiscountThisMonth += $thisOrder->discount - $difference;
+            self::$totalDiscountThisMonth -= $thisOrder->getDiscount();
+            self::$totalDiscountThisMonth += $thisOrder->getDiscount() - $difference;
 
-            $thisOrder->discount = number_format($thisOrder->discount - $difference, 2) ;
-            $thisOrder->price = number_format($thisOrder->price + $difference, 2);
+            $thisOrder->setDiscount(number_format($thisOrder->getDiscount() - $difference, 2));
+            $thisOrder->setPrice(number_format($thisOrder->getPrice() + $difference, 2));
         }
-        self::$lastOrderDate = $thisOrder->date;
+        self::$lastOrderDate = $thisOrder->getDate();
     }
 }

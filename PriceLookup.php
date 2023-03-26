@@ -21,16 +21,16 @@ class PriceLookup
 {
     public static function getPrice($order): string
     {
-        $match = array_filter(Prices::$prices, function ($input) use ($order) {
-            return $input['carrier'] === $order->carrier && $input['size'] === $order->size;
+        $match = array_filter(Prices::$prices, function ($prices) use ($order) {
+            return $prices['carrier'] === $order->getCarrier() && $prices['size'] === $order->getSize();
         });
         return reset($match)['price'];
     }
 
     public static function getCheapest($order): string
     {
-        $sizeMatch = array_filter(Prices::$prices, function ($input) use ($order) {
-            return $input['size'] === $order->size;
+        $sizeMatch = array_filter(Prices::$prices, function ($prices) use ($order) {
+            return $prices['size'] === $order->getSize();
         });
         return min(array_column($sizeMatch, 'price'));
     }

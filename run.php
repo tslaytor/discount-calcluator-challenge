@@ -30,7 +30,7 @@ $rules = [
 ];
 
 foreach ($orders as $order) {
-    if ($order->valid){
+    if ($order->getValid()){
         foreach ($rules as $rule) {
             $rule($order);
         }
