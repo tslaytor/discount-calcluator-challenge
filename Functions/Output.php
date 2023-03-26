@@ -1,6 +1,6 @@
 <?php
 
-require_once '../Models/Order.php';
+require_once 'Models/Order.php';
 
 /**
      * SUMMARY

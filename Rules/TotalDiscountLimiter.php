@@ -1,7 +1,7 @@
 <?php
 
-require_once '../Models/Order.php';
-require_once '../Functions/Month.php';
+require_once 'Models/Order.php';
+require_once 'Functions/Month.php';
 
  /**
      * DESCRIPTION

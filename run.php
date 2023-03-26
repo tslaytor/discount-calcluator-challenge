@@ -1,11 +1,11 @@
 <?php
 
-require_once '/Models/Order.php';
-require_once "/Rules/SmallMatchesLowestPrice.php";
-require_once "/Rules/ThirdLargeFromLpFreeOncePerMonth.php";
-require_once "/Rules/TotalDiscountLimiter.php";
-require_once "FileParser.php";
-require_once "Output.php";
+require_once 'Models/Order.php';
+require_once 'Rules/SmallMatchesLowestPrice.php';
+require_once 'Rules/ThirdLargeFromLpFreeOncePerMonth.php';
+require_once 'Rules/TotalDiscountLimiter.php';
+require_once 'Functions/FileParser.php';
+require_once 'Functions/Output.php';
 
     /**
      * SUMMARY
