@@ -3,6 +3,13 @@
 require_once 'Order.php';
 require_once 'Month.php';
 
+ /**
+     * DESCRIPTION
+     * Takes an order and, if the total discount for the month (including this order) exceeds 10
+     * it will adjust the price and discount for this order to keep the monthly discount limit to 10
+     *
+     */
+
 class TotalDiscountLimiter
 {
     public static ?string $lastOrderDate = null;

@@ -3,6 +3,14 @@
 require_once 'Order.php';
 require_once 'PriceLookup.php';
 
+ /**
+     * DESCRIPTION
+     * Takes an order and, if the order size is small: 
+     * 1. Sets the price to the lowest for small orders among carriers
+     * 2. Sets the discount that has been applied to that order
+     *
+     */
+
 class SmallMatcheslowestPrice
 {
     public function __invoke($order)

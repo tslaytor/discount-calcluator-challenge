@@ -13,7 +13,12 @@ require_once 'Prices.php';
      * 
      * both functions assume valid input. Therefore, input object must be validated first with FileParser::parse() 
      * 
-     * RETURN VALUE EXAMPLES
+     * EXAMPLES
+     * $order = new Order(...); // an order object with 'carrier' = 'LP' and size = 'L';
+     * getPrice($order) // returns '6.90';
+     * 
+     * $order = new Order(...); // an order object with 'size' = 'S';
+     * getCheapest($order) // returns '1.50';
      * 
      */
 

@@ -1,5 +1,14 @@
 <?php
 
+/**
+     * SUMMARY
+     * Object representing a single order
+     *
+     * DESCRIPTION
+     * The order object has all the required properties of an order with private scope, and setter and getter functions to access and modify them
+     * 
+     */
+
 class Order
 {
     public function __construct(
