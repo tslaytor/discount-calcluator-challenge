@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../code/Models/Order.php';
-require_once __DIR__ . '/../code/Functions/PriceLookup.php';
+// require_once __DIR__ . '/../code/Functions/PriceLookup.php';
 require_once __DIR__ . '/../code/Rules/SmallMatchesLowestPrice.php';
 
 use \PHPUnit\Framework\TestCase;

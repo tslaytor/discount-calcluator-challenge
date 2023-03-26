@@ -9,7 +9,8 @@
          failOnRisky="true"
          failOnWarning="true"
          colors="true"
-         cacheResult="false">
+         cacheResult="false"
+         displayDetailsOnTestsThatTriggerWarnings="true">
     <testsuites>
         <testsuite name="default">
             <directory>tests</directory>
